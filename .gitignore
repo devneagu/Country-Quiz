@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+.cache/
+dist/
+public/
+coverage/
+.vscode/
+.env
+.prettierrc.json
+.package-lock.json
