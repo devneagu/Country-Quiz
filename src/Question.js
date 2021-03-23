@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-const Question = function Question({ nextQuestion, quizQuestion }) {
+const Question = function Question({ nextQuestion, quizQuestion, addScore }) {
   const [disableQuestion, setDisableQuestion] = useState(false);
   const [elementSelected, setElementSelected] = useState("");
   const quiz = quizQuestion;
   const questionQuiz = quizQuestion.question;
 
-  console.log("quiz");
-  console.log(quiz);
   useEffect(() => {
     if (disableQuestion) {
       if (quiz.correctAnswer[0].id == elementSelected) {
         document
           .querySelector(".quizAnswer." + quiz.correctAnswer[0].id)
           .classList.add("correct");
+        addScore();
       } else {
         document
           .querySelector(".quizAnswer." + quiz.correctAnswer[0].id)
@@ -61,7 +60,11 @@ const Question = function Question({ nextQuestion, quizQuestion }) {
           <label htmlFor={item.id}>{item.name}</label>
         </div>
       ))}
-      <button className={`${!disableQuestion ? "hidden" : ""}`}>Next</button>
+      <div className="quizFooter">
+        <button className={`nextButton ${!disableQuestion ? "hidden" : ""}`}>
+          Next
+        </button>
+      </div>
     </form>
   );
 };

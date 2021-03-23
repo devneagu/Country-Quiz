@@ -103,8 +103,8 @@ body {
   justify-content: center;
   border: 4px solid white;
   border-radius: 0.8em;
-  margin-top: 2em;
   max-width: 400px;
+  margin: 4em auto;
   background: white;
   padding: 1.2em 2em;
 }
@@ -118,4 +118,26 @@ body {
 }
 .hidden {
   display: none;
+}
+.nextButton {
+  padding: 10px 15px;
+  background: var(--button-color);
+  color: white;
+  border: 1px solid white;
+  transition: 0.1s;
+  border-radius: 0.9em;
+}
+
+.startButton {
+  padding: 10px 15px;
+  background: rgb(196, 0, 0);
+  color: white;
+  border: 1px solid white;
+  transition: 0.1s;
+  border-radius: 0.9em;
+}
+.quizFooter {
+  display: inline-block;
+  text-align: right;
+  width: 100%;
 }

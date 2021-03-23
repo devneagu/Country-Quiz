@@ -4,6 +4,7 @@ import Question from "./Question";
 
 const Quiz = function Quiz() {
   const [quizActive, setQuizActive] = useState(false);
+  const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const [quizList, setQuizList] = useState([]);
@@ -24,6 +25,14 @@ const Quiz = function Quiz() {
       return parseInt(Math.random(Math.random()) * maxim);
     }
     return getRandom();
+  }
+  function uniqueRandomArray(arrayLength, datasetLength) {
+    var arr = [];
+    while (arr.length < arrayLength) {
+      var r = Math.floor(Math.random() * datasetLength) + 1;
+      if (arr.indexOf(r) === -1) arr.push(r);
+    }
+    return arr;
   }
   function buildQuestions(region) {
     fetch("https://restcountries.eu/rest/v2/region/" + region)
@@ -59,6 +68,7 @@ const Quiz = function Quiz() {
               name: newData[thisRandomNumber].country,
             });
           }
+
           arrayRandom.push({
             id: item.correctAnswer[0].id,
             name: item.correctAnswer[0].name,
@@ -81,12 +91,12 @@ const Quiz = function Quiz() {
         for (var i = 0; i < n; i++) {
           randomQuestions.push(newData[randomNumber(newData.length)]);
         }
-        console.log(randomQuestions);
         setQuizQuestion(randomQuestions[0]);
         setQuizList(randomQuestions);
       })
       .then(() => {
         setQuestionIndex(0);
+        setScore(0);
         setQuizActive(true);
         setQuizCompleted(false);
       });
@@ -95,25 +105,36 @@ const Quiz = function Quiz() {
     buildQuestions(regiune);
   }
   function completeQuiz() {
-    quizActive(false);
+    setQuizActive(false);
     setQuizCompleted(true);
   }
 
   function nextQuestion() {
-    console.log(questionIndex);
-    setQuizQuestion(quizList[questionIndex + 1]);
-    setQuestionIndex(questionIndex + 1);
+    if (quizList.length - 1 != questionIndex) {
+      setQuizQuestion(quizList[questionIndex + 1]);
+      setQuestionIndex(questionIndex + 1);
+    } else {
+      completeQuiz();
+    }
   }
 
+  function addScore() {
+    setScore(score + 1);
+  }
   function Police() {
-    if (!quizActive) return <Onboard startQuiz={startQuiz} />;
+    if (!quizActive && quizCompleted == false)
+      return <Onboard startQuiz={startQuiz} />;
     if (quizActive == true && quizCompleted == false) {
       return (
-        <Question quizQuestion={quizQuestion} nextQuestion={nextQuestion} />
+        <Question
+          quizQuestion={quizQuestion}
+          nextQuestion={nextQuestion}
+          addScore={addScore}
+        />
       );
     }
     if (quizCompleted) {
-      return <p>You are all done!</p>;
+      return <p>You are all done! {score}</p>;
     }
   }
 

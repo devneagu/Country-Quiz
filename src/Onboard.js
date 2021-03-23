@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 const Onboard = function Onboard({ startQuiz }) {
+  const [disableQuestion, setDisableQuestion] = useState(false);
+
   const [elementSelected, setElementSelected] = useState("");
   const region = [
     { id: 1, name: "Africa" },
@@ -13,25 +15,33 @@ const Onboard = function Onboard({ startQuiz }) {
     <form
       className=""
       onSubmit={(e) => {
+        console.log("Submit");
         e.stopPropagation();
         e.preventDefault();
+        setDisableQuestion(true);
         startQuiz(elementSelected);
       }}
     >
-      <p>To begin the quiz please select the following level:</p>
+      <p className="questionQuiz">
+        To begin the quiz please select the following level:
+      </p>
       {region.map((item) => (
-        <div key={item.id}>
-          <input
-            type="radio"
-            id={item.name}
-            name="region"
-            value={item.name}
-            onChange={(e) => setElementSelected(e.target.value)}
-          />
+        <div
+          className={`quizAnswer ${item.name}   ${
+            elementSelected == item.name ? "selected" : ""
+          }  `}
+          key={item.name}
+          onClick={() => {
+            setElementSelected(item.name);
+          }}
+        >
+          <input type="radio" id={item.name} name="region" />
           <label htmlFor={item.name}>{item.name}</label>
         </div>
       ))}
-      <button>Let's play!</button>
+      <div className="quizFooter">
+        <button className={`startButton`}>Start Quiz</button>
+      </div>
     </form>
   );
 };
