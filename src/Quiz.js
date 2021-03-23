@@ -34,35 +34,60 @@ const Quiz = function Quiz() {
     }
     return arr;
   }
+  function uniqueRandomArrayExclude(arrayLength, datasetLength, index) {
+    var arr = [];
+    while (arr.length < arrayLength) {
+      var r = Math.floor(Math.random() * datasetLength) + 1;
+      if (arr.indexOf(r) === -1 && r != index) arr.push(r);
+    }
+    return arr;
+  }
   function buildQuestions(region) {
     fetch("https://restcountries.eu/rest/v2/region/" + region)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         let newData = data.map((item) => {
           return {
             id: "qz" + String(parseInt(Math.random(Math.random()) * 100000)),
             country: item.name,
             capital: item.capital,
+            flag: item.flag,
           };
         });
         let countries = data.map((item) => {
           return item.country;
         });
-        newData = newData.map((item) => {
+        newData = newData.map((item, index) => {
+          let coin = parseInt(Math.random() * 10);
+          coin = coin > 5 ? "text" : "svg";
+          let question =
+            coin == "text"
+              ? item.capital + " is the capital of "
+              : "Which country does this flag belong to?";
           return {
             ...item,
-            questionType: "text", //text or image
-            question: item.capital + " is the capital of ",
+            questionType: coin, //text or image
+            question: question,
             answerlist: [],
             correctAnswer: [
-              { id: "qz" + String(randomNumber(100000)), name: item.country },
+              {
+                id: "qz" + String(randomNumber(100000)),
+                name: item.country,
+                index: index,
+              },
             ],
           };
         });
         newData = newData.map((item) => {
+          let uniqueArray = uniqueRandomArrayExclude(
+            3,
+            newData.length - 1,
+            item.correctAnswer[0].index
+          );
           let arrayRandom = [];
           for (var i = 0; i < 3; i++) {
-            let thisRandomNumber = randomNumber(newData.length);
+            let thisRandomNumber = uniqueArray[i];
             arrayRandom.push({
               id: "qz" + String(randomNumber(100000)),
               name: newData[thisRandomNumber].country,
@@ -92,6 +117,7 @@ const Quiz = function Quiz() {
         for (var i = 0; i < n; i++) {
           randomQuestions.push(newData[uniqueArray[i]]);
         }
+        console.log(randomQuestions);
         setQuizQuestion(randomQuestions[0]);
         setQuizList(randomQuestions);
       })
