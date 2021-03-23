@@ -88,20 +88,21 @@ const Quiz = function Quiz() {
 
         var randomQuestions = [];
         var n = 10;
+        let uniqueArray = uniqueRandomArray(n, newData.length - 1);
         for (var i = 0; i < n; i++) {
-          randomQuestions.push(newData[randomNumber(newData.length)]);
+          randomQuestions.push(newData[uniqueArray[i]]);
         }
         setQuizQuestion(randomQuestions[0]);
         setQuizList(randomQuestions);
       })
       .then(() => {
         setQuestionIndex(0);
-        setScore(0);
         setQuizActive(true);
         setQuizCompleted(false);
       });
   }
   function startQuiz(regiune) {
+    setScore(0);
     buildQuestions(regiune);
   }
   function completeQuiz() {
@@ -134,7 +135,22 @@ const Quiz = function Quiz() {
       );
     }
     if (quizCompleted) {
-      return <p>You are all done! {score}</p>;
+      return (
+        <div>
+          <h1>Results</h1>
+          <p>You got {score} correct answers.</p>
+          <div className="quizFooter">
+            <button
+              className="startButton"
+              onClick={() => {
+                setQuizCompleted(false);
+              }}
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      );
     }
   }
 
