@@ -46,7 +46,6 @@ const Quiz = function Quiz() {
     fetch("https://restcountries.eu/rest/v2/region/" + region)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         let newData = data.map((item) => {
           return {
             id: "qz" + String(parseInt(Math.random(Math.random()) * 100000)),
@@ -117,7 +116,6 @@ const Quiz = function Quiz() {
         for (var i = 0; i < n; i++) {
           randomQuestions.push(newData[uniqueArray[i]]);
         }
-        console.log(randomQuestions);
         setQuizQuestion(randomQuestions[0]);
         setQuizList(randomQuestions);
       })
@@ -164,7 +162,9 @@ const Quiz = function Quiz() {
       return (
         <div>
           <h1>Results</h1>
-          <p>You got {score} correct answers.</p>
+          <p className="results">
+            You got <span className="score">{score}</span> correct answers.
+          </p>
           <div className="quizFooter">
             <button
               className="startButton"

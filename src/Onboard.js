@@ -15,11 +15,12 @@ const Onboard = function Onboard({ startQuiz }) {
     <form
       className=""
       onSubmit={(e) => {
-        console.log("Submit");
         e.stopPropagation();
         e.preventDefault();
-        setDisableQuestion(true);
-        startQuiz(elementSelected);
+        if (elementSelected != "") {
+          setDisableQuestion(true);
+          startQuiz(elementSelected);
+        }
       }}
     >
       <div className="svg">

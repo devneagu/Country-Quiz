@@ -141,6 +141,11 @@ body {
   text-align: right;
   width: 100%;
 }
+.results .score {
+  color: var(--correct-answer);
+  font-weight: 900;
+  font-size: 1.4em;
+}
 .svg {
   position: relative;
 }
